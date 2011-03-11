@@ -55,7 +55,8 @@ public class BlitTest extends Sprite {
 	    while (spritesCount) {
 		    fig = sprites[spritesCount-1];
 		    spritesCount--;
-		    fig.move();
+		    fig.update();
+		    fig.highlight(fig.hitTest(mouseX, mouseY));
 		    if (fig.y > maxY) {
 				fig.y = minY;
 			} else
