@@ -52,19 +52,25 @@ public class BlitTest extends Sprite {
 		screenBuffer.fillRect(screenBuffer.rect, 0x000000);
 		var spritesCount:uint = SPRITES_TOTAL;
 		var fig:Circle;
+		var underMouse:Vector.<Circle> = new Vector.<Circle>();
 	    while (spritesCount) {
 		    fig = sprites[spritesCount-1];
 		    spritesCount--;
 		    fig.update();
-		    fig.highlight(fig.hitTest(mouseX, mouseY));
+		    if (fig.hitTest(mouseX, mouseY)) underMouse.push(fig);
+		    else fig.highlight(false);
+		    var offscreen:Boolean = false;
 		    if (fig.y > maxY) {
 				fig.y = minY;
-			} else
+			    offscreen = true;
+			}
 			if (fig.x > maxX) {
 				fig.x = minX;
-			} else
-			screenBuffer.copyPixels(fig.bitmapData,fig.bitmapData.rect,new Point(fig.x,fig.y),fig.bitmapData,new Point(0,0),true);
+				offscreen = true;
+			}
+			if (!offscreen) screenBuffer.copyPixels(fig.bitmapData,fig.bitmapData.rect,new Point(fig.x,fig.y),fig.bitmapData,new Point(0,0),true);
 	    }
+		if (underMouse.length > 0) underMouse.pop().highlight(true);
 	}
 }
 }
