@@ -8,7 +8,9 @@ import flash.display.BitmapData;
 import flash.display.Sprite;
 
 public class Circle {
-	private var _bitmapData:BitmapData;
+	private var _bitmapDataOff:BitmapData;
+	private var _bitmapDataOn:BitmapData;
+	private var _currBitmapData:BitmapData;
 
 	public var x:Number = 0;
 	public var y:Number = 0;
@@ -17,11 +19,10 @@ public class Circle {
 
 
 	public function Circle(size:int,color:uint) {
-
-		_bitmapData = new BitmapData(size, size,true,0x00000000);
-
+		_bitmapDataOff = new BitmapData(size, size,true,0x00000000);
+		_bitmapDataOn = new BitmapData(size, size,true,0x00000000);
+		_currBitmapData = _bitmapDataOn;
 		drawCircle(size,color);
-
 	}
 
 	private function drawCircle(size:int, color:uint):void {
@@ -29,17 +30,30 @@ public class Circle {
 		fig.graphics.beginFill(color);
 		fig.graphics.drawCircle(size/2,size/2,size/2);
 		fig.graphics.endFill();
-		_bitmapData.draw(fig,null,null,null,null,true);
+		_bitmapDataOff.draw(fig,null,null,null,null,true);
+		fig.graphics.lineStyle(0,0xFF0000);
+		fig.graphics.drawRect(0, 0, size-1, size-1);
+		_bitmapDataOn.draw(fig,null,null,null,null,true);
 	}
 
+
+	public function highlight(b:Boolean):void {
+		_currBitmapData = b ? _bitmapDataOn : _bitmapDataOff;
+	}
 
 	public function get bitmapData():BitmapData {
-		return _bitmapData;
+		return _currBitmapData;
 	}
 
-	public function move():void {
+	public function update():void {
 		x += vx;
 		y += vy;
+	}
+
+	public function hitTest(mouseX:Number, mouseY:Number):Boolean {
+		if (mouseX < x || mouseX > x + _bitmapDataOff.width) return false;
+		if (mouseY < y || mouseY > y + _bitmapDataOff.height) return false;
+	 	return true;
 	}
 }
 }
