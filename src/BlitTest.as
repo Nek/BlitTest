@@ -3,6 +3,7 @@ import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.events.MouseEvent;
 import flash.geom.Point;
 import flash.text.TextField;
 import flash.utils.getTimer;
@@ -20,6 +21,7 @@ public class BlitTest extends Sprite {
 	private var maxY:int = 815;
 
 	private static const SPRITES_TOTAL:int = 4000;
+	private var hitTest:Boolean = false;
 
 	public function BlitTest() {
 	    var spritesCount:uint = SPRITES_TOTAL;
@@ -39,12 +41,22 @@ public class BlitTest extends Sprite {
 	    }
 	    screenBuffer = new BitmapData(1200,800,false,0x000000);
 	    var bmp:Bitmap = new Bitmap(screenBuffer);
+		bmp.addEventListener(MouseEvent.MOUSE_OVER, startHitTest);
+		bmp.addEventListener(MouseEvent.MOUSE_OUT, stopHitTest);
 		addChildAt(bmp,0);
 	    _fps = new TextField();
 	    _fps.textColor = 0xFFFFFF;
 	    addChild(_fps);
 		addEventListener(Event.ENTER_FRAME, updateAndRender);
     }
+
+	private function stopHitTest(event:MouseEvent):void {
+		hitTest = false;
+	}
+
+	private function startHitTest(event:MouseEvent):void {
+		hitTest = true;
+	}
 
 	private function updateAndRender(event:Event):void {
 		_framesTotal ++;
@@ -57,7 +69,7 @@ public class BlitTest extends Sprite {
 		    fig = sprites[spritesCount-1];
 		    spritesCount--;
 		    fig.update();
-		    if (fig.hitTest(mouseX, mouseY)) underMouse.push(fig);
+		    if (hitTest && fig.hitTest(mouseX, mouseY)) underMouse.push(fig);
 		    else fig.highlight(false);
 		    var offscreen:Boolean = false;
 		    if (fig.y > maxY) {
