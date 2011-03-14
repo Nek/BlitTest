@@ -1,88 +1,59 @@
 package {
-import flash.display.Bitmap;
-import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
-import flash.events.MouseEvent;
-import flash.geom.Point;
-import flash.text.TextField;
-import flash.utils.getTimer;
 
 [SWF(width='1200',height='800',frameRate='1000',backgroundColor='#000000')]
 public class BlitTest extends Sprite {
-	private var sprites:Vector.<Circle> = new Vector.<Circle>();
-	private var screenBuffer:BitmapData;
-	private var _fps:TextField;
-	private var _framesTotal:int = 0;
 
-	private var minX:int = -15;
-	private var maxX:int = 1215;
-	private var minY:int = -15;
-	private var maxY:int = 815;
+	private var fps:FPSCounter;
+
 
 	private static const SPRITES_TOTAL:int = 4000;
-	private var hitTest:Boolean = false;
+	private static const WIDTH:int = 1200;
+	private static const HEIGHT:int = 800;
+
+	private var manager:SpriteManager;
 
 	public function BlitTest() {
+		manager = new SpriteManager();
+
 	    var spritesCount:uint = SPRITES_TOTAL;
-	    var sprite:Circle;
+		var sprite:Circle;
 	    while (spritesCount) {
+
 		    var d:Number = 15*(Math.random()+.1)+1;
-		    minY = minX = Math.min(-d, minX);
-		    maxX = Math.max(1200 + d, maxX);
-		    maxY = Math.max(800 + d, maxY);
 		    sprite = new Circle(d, Math.random()*0xffffff);
+		    sprite.enabled = true;
 			sprite.x = Math.random()*1240-20;
 			sprite.y = Math.random()*840-20;
 		    sprite.vx = Math.random()*3;
 		    sprite.vy = Math.random()*3;
-			sprites.push(sprite);
+		    manager.add(sprite);
 		    spritesCount--;
 	    }
-	    screenBuffer = new BitmapData(1200,800,false,0x000000);
-	    var bmp:Bitmap = new Bitmap(screenBuffer);
-		bmp.addEventListener(MouseEvent.MOUSE_OVER, startHitTest);
-		bmp.addEventListener(MouseEvent.MOUSE_OUT, stopHitTest);
-		addChildAt(bmp,0);
-	    _fps = new TextField();
-	    _fps.textColor = 0xFFFFFF;
-	    addChild(_fps);
-		addEventListener(Event.ENTER_FRAME, updateAndRender);
+
+		var renderer:SpriteRenderer = new SpriteRenderer(WIDTH, HEIGHT);
+		addChild(renderer);
+
+		manager.renderer = renderer;
+
+	    fps = new FPSCounter();
+	    addChild(fps);
+
+//		var box:Sprite = new Sprite();
+//		box.graphics.beginFill(0xFFFFFF);
+//		box.graphics.drawRect(400,400,400,400);
+//		box.graphics.endFill();
+
+//		addChild(box);
+
+		addEventListener(Event.ENTER_FRAME, update);
     }
 
-	private function stopHitTest(event:MouseEvent):void {
-		hitTest = false;
-	}
+	private function update(event:Event):void {
 
-	private function startHitTest(event:MouseEvent):void {
-		hitTest = true;
-	}
-
-	private function updateAndRender(event:Event):void {
-		_framesTotal ++;
-		_fps.text = (_framesTotal / (getTimer()/1000)).toString();
-		screenBuffer.fillRect(screenBuffer.rect, 0x000000);
-		var spritesCount:uint = SPRITES_TOTAL;
-		var fig:Circle;
-		var underMouse:Vector.<Circle> = new Vector.<Circle>();
-	    while (spritesCount) {
-		    fig = sprites[spritesCount-1];
-		    spritesCount--;
-		    fig.update();
-		    if (hitTest && fig.hitTest(mouseX, mouseY)) underMouse.push(fig);
-		    else fig.highlight(false);
-		    var offscreen:Boolean = false;
-		    if (fig.y > maxY) {
-				fig.y = minY;
-			    offscreen = true;
-			}
-			if (fig.x > maxX) {
-				fig.x = minX;
-				offscreen = true;
-			}
-			if (!offscreen) screenBuffer.copyPixels(fig.bitmapData,fig.bitmapData.rect,new Point(fig.x,fig.y),fig.bitmapData,new Point(0,0),true);
-	    }
-		if (underMouse.length > 0) underMouse.pop().highlight(true);
+		fps.update();
+		manager.update();
 	}
 }
 }
