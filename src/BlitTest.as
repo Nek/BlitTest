@@ -20,25 +20,19 @@ public class BlitTest extends Sprite {
 	    var spritesCount:uint = SPRITES_TOTAL;
 		var sprite:Circle;
 	    while (spritesCount) {
-
-		    var d:Number = 15*(Math.random()+.1)+1;
-		    sprite = new Circle(d, Math.random()*0xffffff);
-		    sprite.enabled = true;
-			sprite.x = Math.random()*1240-20;
-			sprite.y = Math.random()*840-20;
-		    sprite.vx = Math.random()*3;
-		    sprite.vy = Math.random()*3;
+		    sprite = createRandomCircle();
 		    manager.add(sprite);
 		    spritesCount--;
 	    }
 
 		var renderer:SpriteRenderer = new SpriteRenderer(WIDTH, HEIGHT);
 		addChild(renderer);
-
 		manager.renderer = renderer;
 
 	    fps = new FPSCounter();
 	    addChild(fps);
+		fps.x += 50;
+		fps.y += 50;
 
 //		var box:Sprite = new Sprite();
 //		box.graphics.beginFill(0xFFFFFF);
@@ -49,6 +43,16 @@ public class BlitTest extends Sprite {
 
 		addEventListener(Event.ENTER_FRAME, update);
     }
+
+	private function createRandomCircle():Circle {
+		var sprite:Circle = new Circle(15 * (Math.random() + .1) + 1, Math.random() * 0xffffff);
+		sprite.enabled = true;
+		sprite.x = Math.random() * 1240 - 20;
+		sprite.y = Math.random() * 840 - 20;
+		sprite.vx = Math.random() * 3;
+		sprite.vy = Math.random() * 3;
+		return sprite;
+	}
 
 	private function update(event:Event):void {
 
