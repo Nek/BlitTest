@@ -1,4 +1,6 @@
 package {
+import com.nikdudnik.blitter.SpriteManager;
+
 import flash.display.Sprite;
 import flash.events.Event;
 

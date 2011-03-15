@@ -3,7 +3,7 @@
  * Date: 3/12/11
  * Time: 03:25
  */
-package {
+package com.nikdudnik.blitter{
 public class SpriteManager {
 	private var sprites:Vector.<IBitmapSprite>;
 
