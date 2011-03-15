@@ -24,5 +24,9 @@ public interface IBitmapSprite {
 	function get width():int;
 
 	function get height():int;
+
+	function set underMouse(underMouse:Boolean):void;
+
+	function set topmost(topmost:Boolean):void;
 }
 }
