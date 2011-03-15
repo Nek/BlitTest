@@ -15,6 +15,8 @@ public class Circle implements IBitmapSprite {
 	public var vx:Number;
 	public var vy:Number;
 	public var enabled:Boolean = false;
+	private var _underMouse:Boolean = false;
+	private var _topmost:Boolean = false;
 
 
 	public function Circle(size:int,color:uint) {
@@ -35,8 +37,10 @@ public class Circle implements IBitmapSprite {
 	}
 
 	public function update():void {
-		x += vx;
-		y += vy;
+		if (!_topmost) {
+			x += vx;
+			y += vy;
+		}
 	}
 
 	public function hitTest(mouseX:Number, mouseY:Number):Boolean {
@@ -68,6 +72,14 @@ public class Circle implements IBitmapSprite {
 
 	public function get height():int {
 		return _bitmapData.height;
+	}
+
+	public function set underMouse(underMouse:Boolean):void {
+		_underMouse = underMouse;
+	}
+
+	public function set topmost(topmost:Boolean):void {
+		_topmost = topmost;
 	}
 }
 }
