@@ -3,7 +3,7 @@
  * Date: 3/15/11
  * Time: 01:25
  */
-package {
+package com.nikdudnik.widgets{
 import flash.text.TextField;
 import flash.utils.getTimer;
 
