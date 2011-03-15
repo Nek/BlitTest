@@ -3,6 +3,8 @@ import com.nikdudnik.blitter.SpriteManager;
 
 import com.nikdudnik.blitter.SpriteRenderer;
 
+import com.nikdudnik.blitter.actors.Circle;
+
 import flash.display.Sprite;
 import flash.events.Event;
 

@@ -3,7 +3,7 @@
  * Date: 3/8/11
  * Time: 00:15
  */
-package {
+package com.nikdudnik.blitter.actors{
 import flash.display.BitmapData;
 import flash.display.Sprite;
 

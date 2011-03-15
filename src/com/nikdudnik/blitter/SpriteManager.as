@@ -4,6 +4,8 @@
  * Time: 03:25
  */
 package com.nikdudnik.blitter{
+import com.nikdudnik.blitter.actors.IBitmapSprite;
+
 public class SpriteManager {
 	private var sprites:Vector.<IBitmapSprite>;
 

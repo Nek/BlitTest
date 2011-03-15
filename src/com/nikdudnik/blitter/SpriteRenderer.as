@@ -4,6 +4,8 @@
  * Time: 03:06
  */
 package com.nikdudnik.blitter{
+import com.nikdudnik.blitter.actors.IBitmapSprite;
+
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Sprite;
