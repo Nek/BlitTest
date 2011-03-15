@@ -11,7 +11,7 @@ import flash.display.Sprite;
 import flash.events.Event;
 
 [SWF(width='1200',height='800',frameRate='1000',backgroundColor='#000000')]
-public class Blitter extends Sprite {
+public class BlitTest extends Sprite {
 
 	private var fps:FPSCounter;
 
@@ -22,7 +22,7 @@ public class Blitter extends Sprite {
 
 	private var manager:SpriteManager;
 
-	public function Blitter() {
+	public function BlitTest() {
 		var renderer:SpriteRenderer = new SpriteRenderer(WIDTH, HEIGHT);
 		addChild(renderer);
 
